@@ -20,28 +20,36 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   List<String> topMenuItems = ['Home', 'About', 'Reach Us'];
 
-  List<Widget> screens = [HomePage(),WhyBarEx(),AboutPage(), BarterWithUs(), ContactUs()];
+  List<Widget> screens = [
+    HomePage(),
+    WhyBarEx(),
+    AboutPage(),
+    BarterWithUs(),
+    ContactUs()
+  ];
 
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
 
-
-  int getIndex(index){
-    if (index == 1) return 2;
-    else if(index == 2) return 4;
-    else return 0;
+  int getIndex(index) {
+    if (index == 1)
+      return 2;
+    else if (index == 2)
+      return 4;
+    else
+      return 0;
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: BlocListener<MenuItemCubit, MenuItemState>(
         listener: (context, state) {
           if (state is MenuItemSelected) {
-
             itemScrollController.scrollTo(
-                index: getIndex(state.index), duration: Duration(milliseconds: 100));
+                index: getIndex(state.index),
+                duration: Duration(milliseconds: 100));
           }
         },
         child: Stack(
@@ -58,29 +66,22 @@ class _LandingPageState extends State<LandingPage> {
                         Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
                             .withOpacity(1.0);
                     return Container(
-                      constraints: BoxConstraints(
-                        minHeight:600,
+                        constraints: BoxConstraints(
+                          minHeight: 600,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                          top: BorderSide(color: primaryColor, width: 10),
+                          left: index % 2 == 0
+                              ? BorderSide(color: primaryColor, width: 10)
+                              : BorderSide(),
+                          right: index % 2 == 1
+                              ? BorderSide(color: primaryColor, width: 10)
+                              : BorderSide(),
+                        )),
 
-                      ),
-                      decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(color: primaryColor, width: 10),
-                              left: index % 2 == 0
-                                  ? BorderSide(color: primaryColor, width: 10)
-                                  : BorderSide(),
-                              right: index % 2 == 1
-                                  ? BorderSide(color: primaryColor, width: 10)
-                                  : BorderSide(),
-
-
-                          )),
-
-
-
-                      //color: color,
-                      child: screens[index]
-
-                    );
+                        //color: color,
+                        child: screens[index]);
                   }),
             ),
             Row(
@@ -88,8 +89,10 @@ class _LandingPageState extends State<LandingPage> {
               children: [
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: SvgPicture.asset("logo.svg",height: 100,)),
-
+                    child: SvgPicture.asset(
+                      "logo.svg",
+                      height: 100,
+                    )),
                 Expanded(child: NavigationBarWeb(topMenuItems)),
               ],
             ),
@@ -100,12 +103,10 @@ class _LandingPageState extends State<LandingPage> {
   }
 }
 
-
-
 double fontSizeTitle = 24 * 3;
 double fontSizePara = 32;
-double reactSizePara = 16 *2;
-double horizontalSpacing  = 20 * 5;
+double reactSizePara = 16 * 2;
+double horizontalSpacing = 20 * 5;
 double titleSpacing = 12;
 double spaceBetweenWidgets = 50;
 String titleBar = "Bar";
@@ -117,30 +118,24 @@ double minParaWidth = 250;
 double spaceBetweenBarEx = 8;
 double spaceBetweenTitle = 16;
 
-
-Widget getParaText(String para) =>Container(
-constraints: BoxConstraints(
-maxWidth: 750
-),
-child:Text(
-  para,
-  style: TextStyle(
-    fontSize: fontSizePara,
-
-  ),
-
-  softWrap: true,
-));
+Widget getParaText(String para) => Container(
+    constraints: BoxConstraints(maxWidth: 750),
+    child: Text(
+      para,
+      style: TextStyle(
+        fontSize: fontSizePara,
+      ),
+      softWrap: true,
+    ));
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    String para = "BarEx is a digital platform for exchange of businesses,where the businessman,vendors and buyers can come together on the same platform.";
+    String para =
+        "BarEx is a digital platform for exchange of businesses,where the businessman,vendors and buyers can come together on the same platform.";
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: horizontalSpacing),
-
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,19 +144,19 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom:spaceBetweenTitle ),
+                padding: EdgeInsets.only(bottom: spaceBetweenTitle),
                 child: Row(
                   children: [
                     Text(
                       titleBar,
-
-n
                       style: TextStyle(
                           color: blackTextColor,
                           fontSize: fontSizeTitle,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: spaceBetweenBarEx,),
+                    SizedBox(
+                      width: spaceBetweenBarEx,
+                    ),
                     Text(titleEx,
                         style: TextStyle(
                             color: primaryColor,
@@ -171,23 +166,26 @@ n
                 ),
               ),
               getParaText(para)
-
             ],
           ),
-          SizedBox(width: spaceBetweenWidgets,),
+          SizedBox(
+            width: spaceBetweenWidgets,
+          ),
           ClipRRect(
               borderRadius: BorderRadius.circular(containerBorderRadius),
-              child:(SvgPicture.asset("balls.svg",height: imageHeight))),
+              child: (SvgPicture.asset("balls.svg", height: imageHeight))),
         ],
       ),
     );
   }
 }
+
 class WhyBarEx extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String why = "Why";
-    String para = "Get your customised barter deals with BarEx.\nGrowing business on digital platform";
+    String para =
+        "Get your customised barter deals with BarEx.\nGrowing business on digital platform";
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: horizontalSpacing),
@@ -197,14 +195,15 @@ class WhyBarEx extends StatelessWidget {
         children: [
           ClipRRect(
               borderRadius: BorderRadius.circular(containerBorderRadius),
-              child:(SvgPicture.asset("key_hands.svg",height: imageHeight))),
-          SizedBox(width: spaceBetweenWidgets,),
+              child: (SvgPicture.asset("key_hands.svg", height: imageHeight))),
+          SizedBox(
+            width: spaceBetweenWidgets,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Padding(
-                padding: EdgeInsets.only(bottom:spaceBetweenTitle ),
+                padding: EdgeInsets.only(bottom: spaceBetweenTitle),
                 child: Row(
                   children: [
                     Row(
@@ -216,7 +215,9 @@ class WhyBarEx extends StatelessWidget {
                               fontSize: fontSizeTitle,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(width: spaceBetweenBarEx,),
+                        SizedBox(
+                          width: spaceBetweenBarEx,
+                        ),
                         Text(
                           titleBar,
                           style: TextStyle(
@@ -224,7 +225,6 @@ class WhyBarEx extends StatelessWidget {
                               fontSize: fontSizeTitle,
                               fontWeight: FontWeight.bold),
                         ),
-
                         Text(titleEx,
                             style: TextStyle(
                                 color: primaryColor,
@@ -236,23 +236,22 @@ class WhyBarEx extends StatelessWidget {
                 ),
               ),
               getParaText(para)
-
             ],
           ),
-
-
         ],
       ),
     );
   }
 }
+
 class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String about = "About";
-    String para = "We are money free system of exchange.\nExchange your properties, assets and services with us.";
+    String para =
+        "We are money free system of exchange.\nExchange your properties, assets and services with us.";
     //String subtitle = "BUY! SELL! TRADE! BARTER!";
-    List<String> subtitle = ["BUY","SELL","TRADE","BARTER"];
+    List<String> subtitle = ["BUY", "SELL", "TRADE", "BARTER"];
     return Container(
       margin: EdgeInsets.symmetric(horizontal: horizontalSpacing),
       child: Row(
@@ -262,9 +261,8 @@ class AboutPage extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Padding(
-                padding: EdgeInsets.only(bottom:spaceBetweenTitle ),
+                padding: EdgeInsets.only(bottom: spaceBetweenTitle),
                 child: Row(
                   children: [
                     Text(
@@ -274,7 +272,9 @@ class AboutPage extends StatelessWidget {
                           fontSize: fontSizeTitle,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: spaceBetweenBarEx,),
+                    SizedBox(
+                      width: spaceBetweenBarEx,
+                    ),
                     Text(
                       titleBar,
                       style: TextStyle(
@@ -282,7 +282,9 @@ class AboutPage extends StatelessWidget {
                           fontSize: fontSizeTitle,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(width: spaceBetweenBarEx,),
+                    SizedBox(
+                      width: spaceBetweenBarEx,
+                    ),
                     Text(titleEx,
                         style: TextStyle(
                             color: primaryColor,
@@ -292,9 +294,8 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
               Row(
-                children: List.generate(subtitle.length, (index){
-                  return  Padding(
-
+                children: List.generate(subtitle.length, (index) {
+                  return Padding(
                     padding: EdgeInsets.only(right: 8),
                     child: Row(
                       children: [
@@ -302,108 +303,102 @@ class AboutPage extends StatelessWidget {
                           subtitle[index],
                           style: TextStyle(
                               color: primaryColor,
-                              fontSize: fontSizeTitle-24,
+                              fontSize: fontSizeTitle - 24,
                               fontWeight: FontWeight.w800),
                         ),
                         Text(
                           "!",
                           style: TextStyle(
                               color: blackTextColor,
-                              fontSize: fontSizeTitle-24,
+                              fontSize: fontSizeTitle - 24,
                               fontWeight: FontWeight.w800),
                         ),
                       ],
                     ),
                   );
-              }),
+                }),
               ),
               getParaText(para)
-
             ],
           ),
-          SizedBox(width: spaceBetweenWidgets,),
+          SizedBox(
+            width: spaceBetweenWidgets,
+          ),
           ClipRRect(
               borderRadius: BorderRadius.circular(containerBorderRadius),
-              child:(SvgPicture.asset("swap_example.svg",height: imageHeight))),
-
-
-
-
+              child:
+                  (SvgPicture.asset("swap_example.svg", height: imageHeight))),
         ],
       ),
     );
   }
 }
+
 class BarterWithUs extends StatelessWidget {
-
-
-  TextEditingController emailController = TextEditingController(),phoneNumberController =  TextEditingController(),nameController =  TextEditingController();
+  TextEditingController emailController = TextEditingController(),
+      phoneNumberController = TextEditingController(),
+      nameController = TextEditingController();
 
   Widget getDecoration(Widget child) => Container(
-    padding: EdgeInsets.symmetric(horizontal: 36,vertical:12),
-    margin: EdgeInsets.symmetric(vertical: 12),
-    
-    decoration:BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24)
-    ),
-    child: child
-  );
-  Widget getPair(String title,TextEditingController controller){
+      padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
+      margin: EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(24)),
+      child: child);
+
+  Widget getPair(String title, TextEditingController controller) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal:50 ),
+      margin: EdgeInsets.symmetric(horizontal: 50),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           getDecoration(Text(title)),
-          SizedBox(width: spaceBetweenBarEx*2,),
-          Expanded(child: TextFormField(
+          SizedBox(
+            width: spaceBetweenBarEx * 2,
+          ),
+          Expanded(
+              child: TextFormField(
             decoration: InputDecoration(
-    border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(24.0),
-    ),
-    filled: true,
-    //hintStyle: TextStyle(color: Colors.grey[800]),
-    hintText: title,
-    fillColor: Colors.white),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                filled: true,
+                //hintStyle: TextStyle(color: Colors.grey[800]),
+                hintText: title,
+                fillColor: Colors.white),
             style: TextStyle(fontSize: 12),
           ))
         ],
       ),
     );
-
   }
 
   Widget enquiryForm() => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      getPair("Name", nameController),
-      getPair("E-mail", emailController),
-      getPair("Phone", phoneNumberController),
-      SizedBox(height: 80,),
-      Center(
-        child:ElevatedButton(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          getPair("Name", nameController),
+          getPair("E-mail", emailController),
+          getPair("Phone", phoneNumberController),
+          SizedBox(
+            height: 80,
+          ),
+          Center(
+              child: ElevatedButton(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-              child: Text(
-                  "SUBMIT".toUpperCase(),
-                  style: TextStyle(fontSize: 14)
-              ),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child:
+                  Text("SUBMIT".toUpperCase(), style: TextStyle(fontSize: 14)),
             ),
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(primaryColor),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24)
-                    )
-                )
-            ), onPressed: () {  },
-        )
-      )
-    ],
-  );
-
+                        borderRadius: BorderRadius.circular(24)))),
+            onPressed: () {},
+          ))
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -421,17 +416,17 @@ class BarterWithUs extends StatelessWidget {
             width: imageWidth,
             decoration: BoxDecoration(
                 color: primaryColor,
-                borderRadius: BorderRadius.circular(containerBorderRadius)
-            ),
+                borderRadius: BorderRadius.circular(containerBorderRadius)),
             child: enquiryForm(),
           ),
-          SizedBox(width: spaceBetweenWidgets,),
+          SizedBox(
+            width: spaceBetweenWidgets,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Padding(
-                padding: EdgeInsets.only(bottom:spaceBetweenTitle ),
+                padding: EdgeInsets.only(bottom: spaceBetweenTitle),
                 child: Row(
                   children: [
                     Text(
@@ -441,13 +436,14 @@ class BarterWithUs extends StatelessWidget {
                           fontSize: fontSizeTitle,
                           fontWeight: FontWeight.bold),
                     ),
-
                     Text("BARTER",
                         style: TextStyle(
                             color: primaryColor,
                             fontSize: fontSizeTitle,
                             fontWeight: FontWeight.bold)),
-                    SizedBox(width: spaceBetweenBarEx,),
+                    SizedBox(
+                      width: spaceBetweenBarEx,
+                    ),
                     Text(
                       "?",
                       style: TextStyle(
@@ -459,11 +455,8 @@ class BarterWithUs extends StatelessWidget {
                 ),
               ),
               getParaText(para)
-
             ],
           ),
-
-
         ],
       ),
     );
@@ -471,24 +464,20 @@ class BarterWithUs extends StatelessWidget {
 }
 
 class ContactUs extends StatelessWidget {
-
-
-  TextEditingController emailController = TextEditingController(),phoneNumberController =  TextEditingController(),nameController =  TextEditingController();
+  TextEditingController emailController = TextEditingController(),
+      phoneNumberController = TextEditingController(),
+      nameController = TextEditingController();
 
   Widget getDecoration(Widget child) => Container(
-      padding: EdgeInsets.symmetric(horizontal: 36,vertical:12),
+      padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
       margin: EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(24)),
+      child: child);
 
-      decoration:BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24)
-      ),
-      child: child
-  );
-  Widget getPair(IconData iconData,String details){
+  Widget getPair(IconData iconData, String details) {
     return Container(
-
-      margin: EdgeInsets.symmetric(vertical: 20 ),
+      margin: EdgeInsets.symmetric(vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -498,46 +487,53 @@ class ContactUs extends StatelessWidget {
             size: 45,
             color: Colors.white,
           ),
-          SizedBox(width: spaceBetweenBarEx*2,),
-          Text(details,style: TextStyle(fontSize: reactSizePara,color: Colors.white,),softWrap: true,)
+          SizedBox(
+            width: spaceBetweenBarEx * 2,
+          ),
+          Text(
+            details,
+            style: TextStyle(
+              fontSize: reactSizePara,
+              color: Colors.white,
+            ),
+            softWrap: true,
+          )
         ],
       ),
     );
-
   }
 
   Widget reachDetails() => Container(
-
-    child: Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.symmetric(horizontal: 80),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-            getPair(FontAwesomeIcons.instagram, "barex.in"),
-            getPair(FontAwesomeIcons.phone, "+91-9925720096"),
-            getPair(FontAwesomeIcons.mapLocation, "C/10, Nandanvan Chambers,\nOpp. Town Hall, Ellisbridge,\nAhmedabad,\nGujarat - 380006"),
-          ],
-
-      ),
-    ),
-  );
-   Color footerColor = Colors.grey;
+        child: Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.symmetric(horizontal: 80),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              getPair(FontAwesomeIcons.instagram, "barex.in"),
+              getPair(FontAwesomeIcons.phone, "+91-9925720096"),
+              getPair(FontAwesomeIcons.mapLocation,
+                  "C/10, Nandanvan Chambers,\nOpp. Town Hall, Ellisbridge,\nAhmedabad,\nGujarat - 380006"),
+            ],
+          ),
+        ),
+      );
+  Color footerColor = Colors.grey;
   double footerheight = 24;
-Widget getDivider() => Padding(
 
-  padding: EdgeInsets.symmetric(vertical: 6,horizontal: 8),
-  child:   VerticalDivider(
-    color: footerColor,
-    thickness: 2,
+  Widget getDivider() => Padding(
+        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+        child: VerticalDivider(
+          color: footerColor,
+          thickness: 2,
+        ),
+      );
 
-  ),
-);
   @override
   Widget build(BuildContext context) {
     String why = "Why";
-    String para = "Get your customised barter deals with BarEx.\nGrowing business on digital platform.";
+    String para =
+        "Get your customised barter deals with BarEx.\nGrowing business on digital platform.";
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -549,7 +545,6 @@ Widget getDivider() => Padding(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -560,32 +555,25 @@ Widget getDivider() => Padding(
                         fontSize: fontSizeTitle,
                         fontWeight: FontWeight.bold),
                   ),
-
-
-
                 ],
               ),
-              SizedBox(width: spaceBetweenWidgets,),
+              SizedBox(
+                width: spaceBetweenWidgets,
+              ),
               Container(
                 height: imageHeight,
                 width: imageWidth,
                 decoration: BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.circular(containerBorderRadius)
-                ),
+                    color: primaryColor,
+                    borderRadius: BorderRadius.circular(containerBorderRadius)),
                 child: reachDetails(),
               ),
-
-
-
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50,vertical: 20),
-          child: Divider(
-              color: footerColor
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          child: Divider(color: footerColor),
         ),
         IntrinsicHeight(
           child: Row(
@@ -593,7 +581,6 @@ Widget getDivider() => Padding(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                
                 padding: EdgeInsets.symmetric(horizontal: 6),
                 child: Icon(
                   Icons.copyright_outlined,
@@ -601,18 +588,23 @@ Widget getDivider() => Padding(
                   size: footerheight,
                 ),
               ),
-              Text("2022 BarEx",style:TextStyle(color: footerColor,fontSize: footerheight) ,),
+              Text(
+                "2022 BarEx",
+                style: TextStyle(color: footerColor, fontSize: footerheight),
+              ),
               getDivider(),
-              Text("All Rights Reserved",style:TextStyle(color: footerColor,fontSize: footerheight) ,),
+              Text(
+                "All Rights Reserved",
+                style: TextStyle(color: footerColor, fontSize: footerheight),
+              ),
               getDivider(),
-              Text("Designed by BarEx",style:TextStyle(color: footerColor,fontSize: footerheight) ,),
-
+              Text(
+                "Designed by BarEx",
+                style: TextStyle(color: footerColor, fontSize: footerheight),
+              ),
             ],
           ),
         )
-
-
-
       ],
     );
   }
