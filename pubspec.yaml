@@ -42,6 +42,9 @@ dependencies:
   equatable:
   scrollable_positioned_list: ^0.2.3
   font_awesome_flutter: ^10.1.0
+  firebase_core:
+  cloud_firestore:
+  fluttertoast: ^8.0.9
 dev_dependencies:
   flutter_test:
     sdk: flutter

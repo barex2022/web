@@ -39,4 +39,10 @@ Enquiry copyWith({  String? name,
     return map;
   }
 
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "email:$email";
+  }
+
 }

@@ -1,10 +1,13 @@
 import 'package:barex_website/bloc/menu_item/menu_item_cubit.dart';
 import 'package:barex_website/constants/size_config.dart';
 import 'package:barex_website/constants/styles.dart';
+import 'package:barex_website/models/enquiry.dart';
 import 'package:barex_website/widgets/top_navigation_menu.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:math' as math;
 
@@ -346,7 +349,7 @@ class BarterWithUs extends StatelessWidget {
           color: Colors.white, borderRadius: BorderRadius.circular(24)),
       child: child);
 
-  Widget getPair(String title, TextEditingController controller) {
+  Widget getPair(String title, TextEditingController controller,String? Function(String?) validator) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 50),
       child: Row(
@@ -358,6 +361,7 @@ class BarterWithUs extends StatelessWidget {
           ),
           Expanded(
               child: TextFormField(
+                controller: controller,
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24.0),
@@ -365,7 +369,9 @@ class BarterWithUs extends StatelessWidget {
                 filled: true,
                 //hintStyle: TextStyle(color: Colors.grey[800]),
                 hintText: title,
+                errorStyle: TextStyle(color: Colors.yellow,fontSize: fontSizePara/2,fontWeight: FontWeight.bold),
                 fillColor: Colors.white),
+            validator:validator ,
             style: TextStyle(fontSize: 12),
           ))
         ],
@@ -373,12 +379,21 @@ class BarterWithUs extends StatelessWidget {
     );
   }
 
-  Widget enquiryForm() => Column(
+  Widget enquiryForm(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          getPair("Name", nameController),
-          getPair("E-mail", emailController),
-          getPair("Phone", phoneNumberController),
+          getPair("Name", nameController,(name){
+            if (name?.isEmpty == true) return "Please enter your name";
+          }),
+          getPair("E-mail", emailController,(email){
+            if (email?.isEmpty == true) return "E-mail can't be empty";
+            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email!);
+            if(emailValid == false) return "Invalid e-mail!";
+          }),
+          getPair("Phone", phoneNumberController,(phone){
+            if (phone?.isEmpty == true) return "Please enter your mobile number";
+            else if(phone!.length != 10) return "Invalid mobile number";
+          }),
           SizedBox(
             height: 80,
           ),
@@ -395,14 +410,34 @@ class BarterWithUs extends StatelessWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24)))),
-            onPressed: () {},
+            onPressed: () {
+              bool valid = _formKey.currentState?.validate() == true;
+              if(!valid) return;
+
+              CollectionReference enquiry = FirebaseFirestore.instance.collection('enquiry');
+
+              print('${emailController.text}');
+              Enquiry enquiryForm = Enquiry(
+                email: emailController.text,
+                name: nameController.text,
+                phoneNumber: phoneNumberController.text
+              );
+              enquiry.add(enquiryForm.toJson());
+
+
+              _formKey.currentState?.reset();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(
+                  "Thank You! we will be reaching you out soon."
+              )));
+            },
           ))
         ],
       );
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    String why = "WANT to";
+    String why = "WANT to ";
     String para = "Write to us!! We will customise your barter deals.";
 
     return Container(
@@ -417,7 +452,7 @@ class BarterWithUs extends StatelessWidget {
             decoration: BoxDecoration(
                 color: primaryColor,
                 borderRadius: BorderRadius.circular(containerBorderRadius)),
-            child: enquiryForm(),
+            child: Form(key:_formKey,child: enquiryForm(context)),
           ),
           SizedBox(
             width: spaceBetweenWidgets,
